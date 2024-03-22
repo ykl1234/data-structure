@@ -3,78 +3,60 @@ import os
 
 
 class UserInfo:
-    existed = pd.DataFrame(columns=['name', 'password'])
-    admin_password = "2022211154"
-    current_user = -1
-
     def __init__(self):
-        self.current_user = -1
+        self.existed = pd.DataFrame(columns=['name', 'password'])
+        # 确保accounts目录存在
+        if not os.path.exists("./accounts"):
+            os.makedirs("./accounts")
+        # 读取现有的用户数据
         if os.path.exists("./accounts/user.csv"):
             self.existed = pd.read_csv("./accounts/user.csv")
         else:
             self.existed.to_csv("./accounts/user.csv", index=False)
 
-    def SignUp(self):
-        print("Welcome to sign up!")
-        flag = True
-        while flag:
-            flag = False
-            new_name = input("User name: ")
-            if new_name == "-1":
-                return
-            for i in self.existed['name'].tolist():
-                if i == new_name:
-                    flag = True
-                    print("Name already exists!")
-                    break
-            valid_name = False
-            for i in range(26):
-                if new_name.startswith((chr(ord('A') + i), chr(ord('a') + i))):
-                    valid_name = True
-                    break
-            if not valid_name:
-                flag = True
-                print("Invalid name!")
-        flag = True
-        while flag:
-            flag = False
-            new_password = input("Password: ")
-            if len(new_password) < 6:
-                flag = True
-                print("Too short!")
-        self.existed = self.existed._append({"name": new_name, "password": new_password}, ignore_index=True)
-        self.existed.to_csv("./accounts/user.csv", index=False)
-        print("Sign up successfully!")
+    def SignUp(self, new_name, new_password):
+        # 检查用户名是否存在
+        if new_name in self.existed['name'].values:
+            return False, "用户名已存在！"
+        # 检查用户名是否以字母开头
+        if not new_name[0].isalpha():
+            return False, "无效的用户名！必须以字母开头。"
+        # 检查密码长度
+        if len(new_password) < 6:
+            return False, "密码太短！"
 
-    def SignIn(self):
-        if self.current_user != -1:
-            print("Please log out first!")
-            return
-        print("Welcome to sign in!")
-        name = input("User name: ")
-        if name == "-1":
-            return
-        flag = True
-        for i in self.existed.index:
-            if self.existed.loc[i, 'name'] == name:
-                user_id = i
-                flag = False
-                break
-        if flag:
-            print("User doesn't exist!")
-            return
-        for i in range(5):
-            password = input("Password: ")
-            if password == str(self.existed.loc[user_id, 'password']):
-                print("Login successfully!")
-                self.current_user = user_id
-                return
-            print("Wrong password! You have {} attempts left.".format(4 - i))
-        print("Login failed!")
+        # 尝试追加数据并保存到文件
+        try:
+            new_data = pd.DataFrame([[new_name, new_password]], columns=['name', 'password'])
+            self.existed = pd.concat([self.existed, new_data], ignore_index=True)
+            self.existed.to_csv("./accounts/user.csv", index=False)
+        except Exception as e:
+            print(f"保存用户数据时发生错误：{e}")
+            return False, "保存用户数据失败。"
 
-    def SignOut(self):
-        self.current_user = -1
-        print("Sign out successfully!")
+        return True, "注册成功！"
+
+    def SignIn(self, name, password):
+        try:
+            # 确保用户数据是最新的
+            self.existed = pd.read_csv("./accounts/user.csv")
+
+            # 查找用户名是否存在
+            user_row = self.existed[self.existed['name'] == name]
+            if user_row.empty:
+                return False, "用户不存在。"
+
+            # 检查密码是否匹配
+            if user_row.iloc[0]['password'] == password:
+                self.current_user = user_row.index.item()  # 更新当前用户索引为登录用户的索引
+                return True, "登录成功！"
+            else:
+                return False, "密码错误。"
+        except FileNotFoundError:
+            return False, "用户数据文件不存在。"
+        except Exception as e:
+            print(f"登录过程中发生错误：{e}")
+            return False, "登录过程中发生错误。"
 
     def GetCurrentUser(self):
         if self.current_user == -1:
