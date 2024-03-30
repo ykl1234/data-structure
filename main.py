@@ -1,13 +1,17 @@
 import sys
+
+from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QMainWindow
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QDialog, QMessageBox, QMainWindow
+
 from first_windows import Ui_first_windows
+from main_windows import Ui_MainWindow
 from sign_in_windows import Ui_sign_in_windows
 from sign_up_windows import Ui_sign_up_windows_2
-from main_windows import Ui_MainWindow
 from user_info import UserInfo
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import Qt
+
+
 class FirstWindow(QDialog):
     def __init__(self):
         super().__init__()

@@ -56,7 +56,7 @@ class Ui_first_windows(object):
 
     def retranslateUi(self, first_windows):
         _translate = QtCore.QCoreApplication.translate
-        first_windows.setWindowTitle(_translate("first_windows", "Dialog"))
+        first_windows.setWindowTitle(_translate("first_windows", "选择登录/注册界面"))
         self.label.setText(_translate("first_windows", "东哥带你了解游学推荐系统"))
         self.pushButton.setText(_translate("first_windows", "登录"))
         self.pushButton_2.setText(_translate("first_windows", "注册"))

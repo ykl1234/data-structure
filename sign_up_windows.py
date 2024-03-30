@@ -74,7 +74,7 @@ class Ui_sign_up_windows_2(object):
 
     def retranslateUi(self, sign_up_windows_2):
         _translate = QtCore.QCoreApplication.translate
-        sign_up_windows_2.setWindowTitle(_translate("sign_up_windows_2", "Dialog"))
+        sign_up_windows_2.setWindowTitle(_translate("sign_up_windows_2", "用户注册界面"))
         self.label.setText(_translate("sign_up_windows_2", "请输入用户名"))
         self.label_2.setText(_translate("sign_up_windows_2", "输入密码       "))
         self.pushButton.setText(_translate("sign_up_windows_2", "注册"))
