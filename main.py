@@ -44,7 +44,16 @@ class SignInWindow(QDialog):
         username = self.ui.lineEdit.text()
         password = self.ui.lineEdit_2.text()
         success, msg = user_info.SignIn(username, password)
-        QMessageBox.information(self, "登录结果", msg)
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle("登录结果")
+        msgBox.setText(msg)
+
+        # 设置样式表
+        msgBox.setStyleSheet("""
+            QMessageBox { background-color: #ffffff;font-family: 'Microsoft YaHei'; font-size: 9pt;}
+            QPushButton { width: 200px; height: 20px; background-color: #262B4B; color: white; }
+        """)
+        msgBox.exec_()
         if success:
             self.loginSuccess.emit()
             self.mainWindow = MainWindow()
@@ -65,7 +74,16 @@ class SignUpWindow(QDialog):
         username = self.ui.lineEdit.text()
         password = self.ui.sign_up_windows.text()
         success, msg = user_info.SignUp(username, password)
-        QMessageBox.information(self, "注册结果", msg)
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle("登录结果")
+        msgBox.setText(msg)
+
+        # 设置样式表
+        msgBox.setStyleSheet("""
+                    QMessageBox { background-color: #ffffff;font-family: 'Microsoft YaHei'; font-size: 9pt;}
+                    QPushButton { width: 200px; height: 20px; background-color: #262B4B; color: white; }
+                """)
+        msgBox.exec_()
         if success:
             self.signupSuccess.emit()
             self.mainWindow = MainWindow()
