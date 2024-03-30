@@ -11,58 +11,192 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_main_windows(object):
-    def setupUi(self, main_windows):
-        main_windows.setObjectName("main_windows")
-        main_windows.resize(860, 586)
-        self.centralwidget = QtWidgets.QWidget(main_windows)
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(774, 553)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(130, 70, 551, 361))
-        self.widget.setObjectName("widget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(self.widget)
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(-30, -30, 831, 591))
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("images/donk.jpg"))
+        self.label.setPixmap(QtGui.QPixmap("images/background.png"))
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
-        self.label_2 = QtWidgets.QLabel(self.widget)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout.addWidget(self.label_2)
-        main_windows.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(main_windows)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 860, 22))
+        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
+        self.tabWidget.setGeometry(QtCore.QRect(60, 30, 691, 471))
+        self.tabWidget.setStyleSheet("QTabWidget::pane{\n"
+"min-width:70px;\n"
+"min-height:25px;\n"
+"border-top: 2px solid;\n"
+"\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"\n"
+"min-width:70px;\n"
+"\n"
+"min-height:25px;\n"
+"\n"
+"color: white;\n"
+"\n"
+"font:12px \"Microsoft YaHei\";\n"
+"\n"
+"border: 0px solid;\n"
+"\n"
+"\n"
+"\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected{\n"
+"\n"
+"min-width:70px;\n"
+"\n"
+"min-height:25px;\n"
+"color: white;\n"
+"\n"
+"font:13px \"Microsoft YaHei\";\n"
+"\n"
+"border: 0px solid;\n"
+"\n"
+"border-bottom: 2px solid;\n"
+"\n"
+"border-color: #4796f0;\n"
+"\n"
+"}")
+        self.tabWidget.setElideMode(QtCore.Qt.ElideMiddle)
+        self.tabWidget.setObjectName("tabWidget")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.tabWidget_2 = QtWidgets.QTabWidget(self.tab)
+        self.tabWidget_2.setGeometry(QtCore.QRect(0, 0, 691, 441))
+        self.tabWidget_2.setStyleSheet("QTabWidget::pane{\n"
+"min-width:70px;\n"
+"min-height:25px;\n"
+"border-top: 2px solid;\n"
+"\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"\n"
+"min-width:70px;\n"
+"\n"
+"min-height:25px;\n"
+"\n"
+"color: white;\n"
+"\n"
+"font:9px \"Microsoft YaHei\";\n"
+"\n"
+"border: 0px solid;\n"
+"\n"
+"\n"
+"\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected{\n"
+"\n"
+"min-width:70px;\n"
+"\n"
+"min-height:25px;\n"
+"color: white;\n"
+"\n"
+"font:10px \"Microsoft YaHei\";\n"
+"\n"
+"border: 0px solid;\n"
+"\n"
+"border-bottom: 2px solid;\n"
+"\n"
+"border-color: #4796f0;\n"
+"\n"
+"}")
+        self.tabWidget_2.setObjectName("tabWidget_2")
+        self.tab_3 = QtWidgets.QWidget()
+        self.tab_3.setObjectName("tab_3")
+        self.tabWidget_2.addTab(self.tab_3, "")
+        self.tab_4 = QtWidgets.QWidget()
+        self.tab_4.setObjectName("tab_4")
+        self.tabWidget_2.addTab(self.tab_4, "")
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QtWidgets.QWidget()
+        self.tab_2.setObjectName("tab_2")
+        self.tabWidget_3 = QtWidgets.QTabWidget(self.tab_2)
+        self.tabWidget_3.setGeometry(QtCore.QRect(0, 0, 691, 451))
+        self.tabWidget_3.setStyleSheet("QTabWidget::pane{\n"
+"min-width:70px;\n"
+"min-height:25px;\n"
+"border-top: 2px solid;\n"
+"\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"\n"
+"min-width:70px;\n"
+"\n"
+"min-height:25px;\n"
+"\n"
+"color: white;\n"
+"\n"
+"font:9px \"Microsoft YaHei\";\n"
+"\n"
+"border: 0px solid;\n"
+"\n"
+"\n"
+"\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected{\n"
+"\n"
+"min-width:70px;\n"
+"\n"
+"min-height:25px;\n"
+"color: white;\n"
+"\n"
+"font:10px \"Microsoft YaHei\";\n"
+"\n"
+"border: 0px solid;\n"
+"\n"
+"border-bottom: 2px solid;\n"
+"\n"
+"border-color: #4796f0;\n"
+"\n"
+"}")
+        self.tabWidget_3.setObjectName("tabWidget_3")
+        self.tab_5 = QtWidgets.QWidget()
+        self.tab_5.setObjectName("tab_5")
+        self.tabWidget_3.addTab(self.tab_5, "")
+        self.tab_6 = QtWidgets.QWidget()
+        self.tab_6.setObjectName("tab_6")
+        self.tabWidget_3.addTab(self.tab_6, "")
+        self.tabWidget.addTab(self.tab_2, "")
+        self.tab_7 = QtWidgets.QWidget()
+        self.tab_7.setObjectName("tab_7")
+        self.tabWidget.addTab(self.tab_7, "")
+        self.tab_8 = QtWidgets.QWidget()
+        self.tab_8.setObjectName("tab_8")
+        self.tabWidget.addTab(self.tab_8, "")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 774, 22))
         self.menubar.setObjectName("menubar")
-        self.menu = QtWidgets.QMenu(self.menubar)
-        self.menu.setObjectName("menu")
-        main_windows.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(main_windows)
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
-        main_windows.setStatusBar(self.statusbar)
-        self.toolBar = QtWidgets.QToolBar(main_windows)
-        self.toolBar.setObjectName("toolBar")
-        main_windows.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
-        self.actionopen = QtWidgets.QAction(main_windows)
-        self.actionopen.setObjectName("actionopen")
-        self.actionclose = QtWidgets.QAction(main_windows)
-        self.actionclose.setObjectName("actionclose")
-        self.menu.addAction(self.actionopen)
-        self.menu.addAction(self.actionclose)
-        self.menubar.addAction(self.menu.menuAction())
-        self.toolBar.addAction(self.actionopen)
-        self.toolBar.addAction(self.actionclose)
+        MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(main_windows)
-        QtCore.QMetaObject.connectSlotsByName(main_windows)
+        self.retranslateUi(MainWindow)
+        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget_3.setCurrentIndex(0)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, main_windows):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        main_windows.setWindowTitle(_translate("main_windows", "MainWindow"))
-        self.label_2.setText(_translate("main_windows", "我是donk，我将介绍我们组的游学管理系统"))
-        self.menu.setTitle(_translate("main_windows", "菜单"))
-        self.toolBar.setWindowTitle(_translate("main_windows", "toolBar"))
-        self.actionopen.setText(_translate("main_windows", "open"))
-        self.actionclose.setText(_translate("main_windows", "close"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "Tab 1"))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "Tab 2"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "游学日记"))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_5), _translate("MainWindow", "Tab 1"))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_6), _translate("MainWindow", "Tab 2"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "游学推荐"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_7), _translate("MainWindow", "页"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_8), _translate("MainWindow", "页"))

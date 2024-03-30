@@ -4,9 +4,10 @@ from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QMainWindow
 from first_windows import Ui_first_windows
 from sign_in_windows import Ui_sign_in_windows
 from sign_up_windows import Ui_sign_up_windows_2
-from main_windows import Ui_main_windows
+from main_windows import Ui_MainWindow
 from user_info import UserInfo
-
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import Qt
 class FirstWindow(QDialog):
     def __init__(self):
         super().__init__()
@@ -70,10 +71,12 @@ class SignUpWindow(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.ui = Ui_main_windows()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
 if __name__ == "__main__":
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)  # 启用高DPI缩放
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)  # 启用高DPI图标
     app = QApplication(sys.argv)
     user_info = UserInfo()  # Create an instance of UserInfo
     firstWindow = FirstWindow()
