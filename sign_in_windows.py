@@ -63,7 +63,7 @@ class Ui_sign_in_windows(object):
         self.label_3 = QtWidgets.QLabel(sign_in_windows)
         self.label_3.setGeometry(QtCore.QRect(0, 0, 501, 321))
         self.label_3.setText("")
-        self.label_3.setPixmap(QtGui.QPixmap("C:/Users/shawn/Desktop/ui源码/res/background.png"))
+        self.label_3.setPixmap(QtGui.QPixmap("images/background.png"))
         self.label_3.setScaledContents(True)
         self.label_3.setObjectName("label_3")
         self.label_3.raise_()

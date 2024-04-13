@@ -9,7 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from tour_diary import TourDiary
+from user_info import UserInfo
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -26,6 +27,51 @@ class Ui_MainWindow(object):
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setGeometry(QtCore.QRect(60, 30, 691, 471))
         self.tabWidget.setStyleSheet("QTabWidget::pane{\n"
+"min-width:70px;\n"
+"min-height:25px;\n"
+"border-top: 2px solid;\n"
+"\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"\n"
+"min-width:70px;\n"
+"\n"
+"min-height:25px;\n"
+"\n"
+"color: white;\n"
+"\n"
+"font:15px \"Microsoft YaHei\";\n"
+"\n"
+"border: 0px solid;\n"
+"\n"
+"\n"
+"\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected{\n"
+"\n"
+"min-width:70px;\n"
+"\n"
+"min-height:25px;\n"
+"color: white;\n"
+"\n"
+"font:17px \"Microsoft YaHei\";\n"
+"\n"
+"border: 0px solid;\n"
+"\n"
+"border-bottom: 2px solid;\n"
+"\n"
+"border-color: #4796f0;\n"
+"\n"
+"}")
+        self.tabWidget.setElideMode(QtCore.Qt.ElideMiddle)
+        self.tabWidget.setObjectName("tabWidget")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.tabWidget_2 = QtWidgets.QTabWidget(self.tab)
+        self.tabWidget_2.setGeometry(QtCore.QRect(0, 0, 691, 441))
+        self.tabWidget_2.setStyleSheet("QTabWidget::pane{\n"
 "min-width:70px;\n"
 "min-height:25px;\n"
 "border-top: 2px solid;\n"
@@ -64,51 +110,6 @@ class Ui_MainWindow(object):
 "border-color: #4796f0;\n"
 "\n"
 "}")
-        self.tabWidget.setElideMode(QtCore.Qt.ElideMiddle)
-        self.tabWidget.setObjectName("tabWidget")
-        self.tab = QtWidgets.QWidget()
-        self.tab.setObjectName("tab")
-        self.tabWidget_2 = QtWidgets.QTabWidget(self.tab)
-        self.tabWidget_2.setGeometry(QtCore.QRect(0, 0, 691, 441))
-        self.tabWidget_2.setStyleSheet("QTabWidget::pane{\n"
-"min-width:70px;\n"
-"min-height:25px;\n"
-"border-top: 2px solid;\n"
-"\n"
-"}\n"
-"\n"
-"QTabBar::tab {\n"
-"\n"
-"min-width:70px;\n"
-"\n"
-"min-height:25px;\n"
-"\n"
-"color: white;\n"
-"\n"
-"font:9px \"Microsoft YaHei\";\n"
-"\n"
-"border: 0px solid;\n"
-"\n"
-"\n"
-"\n"
-"}\n"
-"\n"
-"QTabBar::tab:selected{\n"
-"\n"
-"min-width:70px;\n"
-"\n"
-"min-height:25px;\n"
-"color: white;\n"
-"\n"
-"font:10px \"Microsoft YaHei\";\n"
-"\n"
-"border: 0px solid;\n"
-"\n"
-"border-bottom: 2px solid;\n"
-"\n"
-"border-color: #4796f0;\n"
-"\n"
-"}")
         self.tabWidget_2.setObjectName("tabWidget_2")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
@@ -136,7 +137,7 @@ class Ui_MainWindow(object):
 "\n"
 "color: white;\n"
 "\n"
-"font:9px \"Microsoft YaHei\";\n"
+"font:12px \"Microsoft YaHei\";\n"
 "\n"
 "border: 0px solid;\n"
 "\n"
@@ -151,7 +152,7 @@ class Ui_MainWindow(object):
 "min-height:25px;\n"
 "color: white;\n"
 "\n"
-"font:10px \"Microsoft YaHei\";\n"
+"font:13px \"Microsoft YaHei\";\n"
 "\n"
 "border: 0px solid;\n"
 "\n"
@@ -163,9 +164,59 @@ class Ui_MainWindow(object):
         self.tabWidget_3.setObjectName("tabWidget_3")
         self.tab_5 = QtWidgets.QWidget()
         self.tab_5.setObjectName("tab_5")
+        self.layoutWidget = QtWidgets.QWidget(self.tab_5)
+        self.layoutWidget.setGeometry(QtCore.QRect(20, 10, 201, 61))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.layoutWidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.searchKeyword = QtWidgets.QLineEdit(self.layoutWidget)
+        self.searchKeyword.setStyleSheet("font: 9pt \"微软雅黑\";\n"
+"")
+        self.searchKeyword.setText("")
+        self.searchKeyword.setObjectName("searchKeyword")
+        self.horizontalLayout.addWidget(self.searchKeyword)
+        self.searchButton = QtWidgets.QPushButton(self.layoutWidget)
+        self.searchButton.setStyleSheet("background-color: rgb(38, 40, 72);")
+        self.searchButton.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("images/search.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.searchButton.setIcon(icon)
+        self.searchButton.setAutoExclusive(True)
+        self.searchButton.setObjectName("searchButton")
+        self.horizontalLayout.addWidget(self.searchButton)
+        self.widget = QtWidgets.QWidget(self.tab_5)
+        self.widget.setGeometry(QtCore.QRect(20, 100, 501, 281))
+        self.widget.setObjectName("widget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.diaryTitle = QtWidgets.QLineEdit(self.widget)
+        self.diaryTitle.setObjectName("diaryTitle")
+        self.verticalLayout.addWidget(self.diaryTitle)
+        self.diaryContent = QtWidgets.QTextEdit(self.widget)
+        self.diaryContent.setReadOnly(False)
+        self.diaryContent.setObjectName("diaryContent")
+        self.verticalLayout.addWidget(self.diaryContent)
         self.tabWidget_3.addTab(self.tab_5, "")
         self.tab_6 = QtWidgets.QWidget()
         self.tab_6.setObjectName("tab_6")
+        self.newDiaryTitle = QtWidgets.QLineEdit(self.tab_6)
+        self.newDiaryTitle.setGeometry(QtCore.QRect(50, 20, 601, 31))
+        self.newDiaryTitle.setAccessibleName("")
+        self.newDiaryTitle.setAccessibleDescription("")
+        self.newDiaryTitle.setStyleSheet("font: 9pt \"微软雅黑\";")
+        self.newDiaryTitle.setObjectName("newDiaryTitle")
+        self.newDiaryContent = QtWidgets.QTextEdit(self.tab_6)
+        self.newDiaryContent.setGeometry(QtCore.QRect(50, 70, 601, 241))
+        self.newDiaryContent.setStyleSheet("font: 9pt \"微软雅黑\";")
+        self.newDiaryContent.setObjectName("newDiaryContent")
+        self.createButton = QtWidgets.QPushButton(self.tab_6)
+        self.createButton.setGeometry(QtCore.QRect(290, 340, 91, 31))
+        self.createButton.setStyleSheet("background-color: rgb(38, 40, 72);\n"
+"color: rgb(255, 255, 255);\n"
+"font: 9pt \"微软雅黑\";")
+        self.createButton.setObjectName("createButton")
         self.tabWidget_3.addTab(self.tab_6, "")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_7 = QtWidgets.QWidget()
@@ -194,9 +245,14 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "游学推荐系统主界面"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "Tab 1"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "Tab 2"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "游学日记"))
-        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_5), _translate("MainWindow", "Tab 1"))
-        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_6), _translate("MainWindow", "Tab 2"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "游学推荐"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "首页"))
+        self.searchKeyword.setPlaceholderText(_translate("MainWindow", "请输入要搜索的关键词"))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_5), _translate("MainWindow", "日记搜索"))
+        self.newDiaryTitle.setPlaceholderText(_translate("MainWindow", "请输入日记标题"))
+        self.newDiaryContent.setPlaceholderText(_translate("MainWindow", "请输入日记内容"))
+        self.createButton.setText(_translate("MainWindow", "新建日记"))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_6), _translate("MainWindow", "新建日记"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "游学日记"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_7), _translate("MainWindow", "页"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_8), _translate("MainWindow", "页"))
+
