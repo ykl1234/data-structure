@@ -49,6 +49,13 @@ class UserInfo:
             # 检查密码是否匹配
             if user_row.iloc[0]['password'] == password:
                 self.current_user = user_row.index.item()  # 更新当前用户索引为登录用户的索引
+                # last_user = {'name': name, 'password': password, 'autologin': False}
+                if os.path.exists('./accounts/last_user.csv'):
+                    # last_user = pd.DataFrame(columns=['name', 'password', 'autologin'], index=[0])
+                    last_user = pd.read_csv('./accounts/last_user.csv')
+                    last_user.iloc[0, last_user.columns.get_loc('name')] = name
+                    last_user.iloc[0, last_user.columns.get_loc('password')] = password
+                    pd.DataFrame(last_user, index=[0]).to_csv('./accounts/last_user.csv', index=False)
                 return True, "登录成功！"
             else:
                 return False, "密码错误。"
@@ -59,11 +66,15 @@ class UserInfo:
             return False, "登录过程中发生错误。"
 
     def GetCurrentUser(self):
-        if self.current_user == -1:
-            print("Please sign in!")
-        else:
-            print("User id: {}".format(self.current_user))
-            print("User name: {}".format(self.existed.loc[self.current_user, 'name']))
+        # if self.current_user == -1:
+        #     print("Please sign in!")
+        # else:
+        #     print("User id: {}".format(self.current_user))
+        #     print("User name: {}".format(self.existed.loc[self.current_user, 'name']))
+        return self.current_user
+
+    def GetUserName(self, uid):
+        return self.existed.iloc[uid]['name']
 
     def CheckExist(self, uid):
         for i in self.existed.index:

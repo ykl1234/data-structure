@@ -1,14 +1,17 @@
 import sys
 
+import pandas as pd
+import os
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QDialog, QMessageBox, QMainWindow
+from PyQt5.QtWidgets import QApplication, QLineEdit, QTextEdit, QDialog, QMessageBox, QMainWindow
+from PyQt5.QtWidgets import QListWidget, QListWidgetItem
 
 from first_windows import Ui_first_windows
 from main_windows import Ui_MainWindow
 from sign_in_windows import Ui_sign_in_windows
 from sign_up_windows import Ui_sign_up_windows_2
+from diary import Ui_diaryWindows
 from user_info import UserInfo
 from tour_diary import TourDiary
 
@@ -50,8 +53,41 @@ class SignInWindow(QDialog):
         super().__init__()
         self.ui = Ui_sign_in_windows()
         self.ui.setupUi(self)
+        if os.path.exists('./accounts/last_user.csv'):
+            last_user = pd.read_csv('./accounts/last_user.csv')
+            if last_user.iloc[0]['autologin']:
+                self.ui.autoLogin.setChecked(True)
+                username = last_user.iloc[0]['name']
+                password = last_user.iloc[0]['password']
+                print(username, password)
+                if not (pd.isna(username) or pd.isna(password)):
+                    self.ui.lineEdit.setText(username)
+                    self.ui.lineEdit_2.setText(password)
+            else:
+                self.ui.autoLogin.setChecked(False)
+        else:
+            pd.DataFrame({'name': None, 'password': None, 'autologin': False}, index=[0]).to_csv('./accounts'
+                                                                                                 '/last_user.csv',
+                                                                                                 index=False)
+        self.ui.autoLogin.stateChanged.connect(self.updateBool)
         self.ui.pushButton.clicked.connect(self.login)
         self.ui.pushButton_2.clicked.connect(self.close)
+
+    def updateBool(self):
+        if self.ui.autoLogin.checkState() == Qt.Checked:
+            self.auto_login = True
+            if os.path.exists('./accounts/last_user.csv'):
+                last_user = pd.read_csv('./accounts/last_user.csv')
+                # if not last_user.empty:
+                last_user.iloc[0, last_user.columns.get_loc('autologin')] = True
+                print(last_user)
+                last_user.to_csv('./accounts/last_user.csv', index=False)
+        else:
+            self.auto_login = False
+            if os.path.exists('./accounts/last_user.csv'):
+                # last_user = pd.DataFrame(columns=['name', 'password', 'autologin'], index=[0])
+                pd.DataFrame({'name': None, 'password': None, 'autologin': False}, index=[0]).to_csv(
+                    './accounts/last_user.csv', index=False)
 
     def login(self):
         username = self.ui.lineEdit.text()
@@ -93,35 +129,49 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # 连接搜索按钮的点击事件
         self.ui.searchButton.clicked.connect(self.searchDiary)
-        # 连接创建日记按钮的点击事件
         self.ui.createButton.clicked.connect(self.createDiary)
+        self.ui.diaryTitleList.itemClicked.connect(self.showDiaryDetails)
+        # self.ui.myDiaryTitleList.itemClicked.connect(self.showDiaryDetails)
 
     def searchDiary(self):
         keyword = self.ui.searchKeyword.text()
         success, results = tour_diary.SearchDiary(keyword)
         if success:
-            if not results.empty:
-                first_match_id = results.iloc[0]['id']
-                successShow, content = tour_diary.ShowDiary(first_match_id)
-                if successShow:
-                    diary_title = results.iloc[0]['title']
-                    self.ui.diaryTitle.setText(diary_title)
-                    self.ui.diaryContent.setText(content)
-                else:
-                    showMessageBox("日记内容显示错误", content)
-            else:
-                showMessageBox("搜索结果", "未找到匹配的日记。")
+            self.ui.diaryTitleList.clear()
+            for index, row in results.iterrows():
+                item = QListWidgetItem(f"{tour_diary.DiaryName(int(row['diary_id']))}")
+                item.setData(Qt.UserRole, row['diary_id'])
+                self.ui.diaryTitleList.addItem(item)
         else:
-            showMessageBox("搜索结果", results)  # results 为错误消息
+            showMessageBox("搜索结果", results)
+
+    def showDiaryDetails(self, item):
+        diaryId = item.data(Qt.UserRole)
+        self.diaryWindow = DiaryWindow(diaryId)
+        self.diaryWindow.show()
 
     def createDiary(self):
-        # 从 QLineEdit 和 QTextEdit 获取标题和内容
         title = self.ui.newDiaryTitle.text()
         content = self.ui.newDiaryContent.toPlainText()
         success, msg = tour_diary.CreateDiary(title, content)
         showMessageBox("创建结果", msg)
+
+
+class DiaryWindow(QMainWindow):
+    def __init__(self, diary_id, parent=None):
+        super().__init__(parent)
+        self.ui = Ui_diaryWindows()
+        self.ui.setupUi(self)
+        self.displayDiary(diary_id)
+
+    def displayDiary(self, diary_id):
+        success, content = tour_diary.ShowDiary(diary_id)  # 假设这是获取日记内容的函数
+        if success:
+            self.ui.diaryContent1.setText(content)  # 假设Ui_diaryWindows有一个textEdit来显示日记内容
+            # self.ui.diaryTitle.setText()  # 获取标题
+        else:
+            showMessageBox("错误", "无法加载日记内容。")
 
 
 if __name__ == "__main__":

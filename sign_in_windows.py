@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_sign_in_windows(object):
     def setupUi(self, sign_in_windows):
         sign_in_windows.setObjectName("sign_in_windows")
-        sign_in_windows.resize(495, 310)
+        sign_in_windows.resize(495, 321)
         self.layoutWidget = QtWidgets.QWidget(sign_in_windows)
         self.layoutWidget.setGeometry(QtCore.QRect(90, 70, 301, 151))
         self.layoutWidget.setObjectName("layoutWidget")
@@ -66,8 +66,14 @@ class Ui_sign_in_windows(object):
         self.label_3.setPixmap(QtGui.QPixmap("images/background.png"))
         self.label_3.setScaledContents(True)
         self.label_3.setObjectName("label_3")
+        self.autoLogin = QtWidgets.QCheckBox(sign_in_windows)
+        self.autoLogin.setGeometry(QtCore.QRect(307, 230, 81, 20))
+        self.autoLogin.setStyleSheet("font: 9pt \"微软雅黑\";\n"
+"color: rgb(255, 255, 255);")
+        self.autoLogin.setObjectName("autoLogin")
         self.label_3.raise_()
         self.layoutWidget.raise_()
+        self.autoLogin.raise_()
         self.label.setBuddy(self.lineEdit)
         self.label_2.setBuddy(self.lineEdit_2)
 
@@ -81,3 +87,4 @@ class Ui_sign_in_windows(object):
         self.label_2.setText(_translate("sign_in_windows", "输入密码       "))
         self.pushButton.setText(_translate("sign_in_windows", "登录"))
         self.pushButton_2.setText(_translate("sign_in_windows", "取消"))
+        self.autoLogin.setText(_translate("sign_in_windows", "自动登录"))
