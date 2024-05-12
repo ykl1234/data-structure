@@ -1,19 +1,19 @@
+import os
 import sys
 
 import pandas as pd
-import os
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QLineEdit, QTextEdit, QDialog, QMessageBox, QMainWindow
-from PyQt5.QtWidgets import QListWidget, QListWidgetItem
+from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QMainWindow, QMenu
+from PyQt5.QtWidgets import QListWidgetItem
 
+from diary import Ui_diaryWindows
 from first_windows import Ui_first_windows
 from main_windows import Ui_MainWindow
 from sign_in_windows import Ui_sign_in_windows
 from sign_up_windows import Ui_sign_up_windows_2
-from diary import Ui_diaryWindows
-from user_info import UserInfo
 from tour_diary import TourDiary
+from user_info import UserInfo
 
 
 def showMessageBox(title, message):
@@ -126,25 +126,44 @@ class SignUpWindow(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_MainWindow()  # 假设已经从其他地方导入了 Ui_MainWindow
         self.ui.setupUi(self)
+
+        self.searchType = 0
 
         self.ui.searchButton.clicked.connect(self.searchDiary)
         self.ui.createButton.clicked.connect(self.createDiary)
         self.ui.diaryTitleList.itemClicked.connect(self.showDiaryDetails)
-        # self.ui.myDiaryTitleList.itemClicked.connect(self.showDiaryDetails)
+        self.ui.searchSelect.currentIndexChanged.connect(self.selection_change)
+        self.ui.diaryTitleList.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.diaryTitleList.customContextMenuRequested.connect(self.openContextMenu)
+
+    def keyPressEvent(self, event):
+        if (self.ui.tabWidget.currentIndex() == 1 and
+                self.ui.tabWidget_3.currentIndex() == 0):
+            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+                self.searchDiary()
+
+    def selection_change(self, index):
+        self.searchType = index
 
     def searchDiary(self):
         keyword = self.ui.searchKeyword.text()
-        success, results = tour_diary.SearchDiary(keyword)
-        if success:
+        if self.searchType == 0:
+            self.success, self.results = tour_diary.SearchDiary(keyword)
+        elif self.searchType == 1:
+            self.success, self.results = tour_diary.SearchDiary(keyword, 1)
+        elif self.searchType == 2:
+            self.success, self.results = tour_diary.SearchDiary(keyword, 2)
+
+        if self.success:
             self.ui.diaryTitleList.clear()
-            for index, row in results.iterrows():
+            for index, row in self.results.iterrows():
                 item = QListWidgetItem(f"{tour_diary.DiaryName(int(row['diary_id']))}")
                 item.setData(Qt.UserRole, row['diary_id'])
                 self.ui.diaryTitleList.addItem(item)
         else:
-            showMessageBox("搜索结果", results)
+            showMessageBox("删除结果", self.results)
 
     def showDiaryDetails(self, item):
         diaryId = item.data(Qt.UserRole)
@@ -157,6 +176,25 @@ class MainWindow(QMainWindow):
         success, msg = tour_diary.CreateDiary(title, content)
         showMessageBox("创建结果", msg)
 
+    def openContextMenu(self, position):
+        menu = QMenu()
+        deleteAction = menu.addAction("删除日记")
+        deleteAction.triggered.connect(self.deleteItem)
+        menu.exec_(self.ui.diaryTitleList.viewport().mapToGlobal(position))
+
+    def deleteItem(self):
+        current_item = self.ui.diaryTitleList.currentItem()
+        if current_item:
+            diaryId = current_item.data(Qt.UserRole)
+            success, msg = tour_diary.DeleteDiary(diaryId)
+            if success:  # 假设 DeleteDiary 正确实现了
+                row = self.ui.diaryTitleList.row(current_item)
+                self.ui.diaryTitleList.takeItem(row)
+                showMessageBox("删除结果", msg)
+            else:
+                showMessageBox("删除结果", msg)
+
+
 
 class DiaryWindow(QMainWindow):
     def __init__(self, diary_id, parent=None):
@@ -168,8 +206,18 @@ class DiaryWindow(QMainWindow):
     def displayDiary(self, diary_id):
         success, content = tour_diary.ShowDiary(diary_id)  # 假设这是获取日记内容的函数
         if success:
-            self.ui.diaryContent1.setText(content)  # 假设Ui_diaryWindows有一个textEdit来显示日记内容
-            # self.ui.diaryTitle.setText()  # 获取标题
+            max_length = 350  # 假设diaryContent1可以容纳300个字符
+            if len(content) > max_length:
+                part1 = content[:max_length]
+                part2 = content[max_length:]
+                self.ui.diaryContent1.setText(part1)
+                self.ui.diaryContent2.setText(part2)
+            else:
+                self.ui.diaryContent1.setText(content)
+                self.ui.diaryContent2.clear()  # 清空第二个文本框，以防之前有内容
+
+            self.ui.diaryTitle.setText(tour_diary.DiaryName(int(diary_id)))  # 获取标题
+            self.ui.diaryAuthor.setText("——" + tour_diary.AuthorName(int(diary_id)))
         else:
             showMessageBox("错误", "无法加载日记内容。")
 
