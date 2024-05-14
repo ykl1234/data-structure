@@ -163,7 +163,7 @@ class Ui_MainWindow(object):
         self.newDiaryTitle.setStyleSheet("font: 9pt \"微软雅黑\";")
         self.newDiaryTitle.setObjectName("newDiaryTitle")
         self.newDiaryContent = QtWidgets.QTextEdit(self.tab_6)
-        self.newDiaryContent.setGeometry(QtCore.QRect(20, 90, 631, 241))
+        self.newDiaryContent.setGeometry(QtCore.QRect(20, 90, 631, 231))
         self.newDiaryContent.setStyleSheet("font: 9pt \"微软雅黑\";")
         self.newDiaryContent.setObjectName("newDiaryContent")
         self.createButton = QtWidgets.QPushButton(self.tab_6)
@@ -172,6 +172,13 @@ class Ui_MainWindow(object):
 "color: rgb(255, 255, 255);\n"
 "font: 9pt \"微软雅黑\";")
         self.createButton.setObjectName("createButton")
+        self.pushButton = QtWidgets.QPushButton(self.tab_6)
+        self.pushButton.setGeometry(QtCore.QRect(20, 260, 71, 61))
+        self.pushButton.setText("")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("images/add_image.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton.setIcon(icon1)
+        self.pushButton.setObjectName("pushButton")
         self.tabWidget_3.addTab(self.tab_6, "")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_7 = QtWidgets.QWidget()
@@ -179,9 +186,9 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_7, "")
         self.tab_8 = QtWidgets.QWidget()
         self.tab_8.setObjectName("tab_8")
-        self.tabWidget_2 = QtWidgets.QTabWidget(self.tab_8)
-        self.tabWidget_2.setGeometry(QtCore.QRect(0, 0, 691, 441))
-        self.tabWidget_2.setStyleSheet("QTabWidget::pane{\n"
+        self.account = QtWidgets.QTabWidget(self.tab_8)
+        self.account.setGeometry(QtCore.QRect(0, 0, 691, 441))
+        self.account.setStyleSheet("QTabWidget::pane{\n"
 "min-width:70px;\n"
 "min-height:25px;\n"
 "border-top: 2px solid;\n"
@@ -220,16 +227,23 @@ class Ui_MainWindow(object):
 "border-color: #4796f0;\n"
 "\n"
 "}")
-        self.tabWidget_2.setObjectName("tabWidget_2")
+        self.account.setObjectName("account")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
         self.myDiaryTitleList = QtWidgets.QListView(self.tab_3)
         self.myDiaryTitleList.setGeometry(QtCore.QRect(40, 40, 531, 351))
         self.myDiaryTitleList.setObjectName("myDiaryTitleList")
-        self.tabWidget_2.addTab(self.tab_3, "")
+        self.account.addTab(self.tab_3, "")
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
-        self.tabWidget_2.addTab(self.tab_4, "")
+        self.account.addTab(self.tab_4, "")
+        self.tab_9 = QtWidgets.QWidget()
+        self.tab_9.setObjectName("tab_9")
+        self.deleteUserData = QtWidgets.QPushButton(self.tab_9)
+        self.deleteUserData.setGeometry(QtCore.QRect(260, 170, 111, 51))
+        self.deleteUserData.setStyleSheet("font: 9pt \"微软雅黑\";")
+        self.deleteUserData.setObjectName("deleteUserData")
+        self.account.addTab(self.tab_9, "")
         self.tabWidget.addTab(self.tab_8, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -242,8 +256,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(1)
-        self.tabWidget_3.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_3.setCurrentIndex(1)
+        self.account.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -261,6 +275,8 @@ class Ui_MainWindow(object):
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_6), _translate("MainWindow", "新建日记"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "游学日记"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_7), _translate("MainWindow", "页"))
-        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "我的日记"))
-        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "Tab 2"))
+        self.account.setTabText(self.account.indexOf(self.tab_3), _translate("MainWindow", "我的日记"))
+        self.account.setTabText(self.account.indexOf(self.tab_4), _translate("MainWindow", "Tab 2"))
+        self.deleteUserData.setText(_translate("MainWindow", "注销账户"))
+        self.account.setTabText(self.account.indexOf(self.tab_9), _translate("MainWindow", "账户"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_8), _translate("MainWindow", "我的"))

@@ -27,6 +27,30 @@ def showMessageBox(title, message):
     msgBox.exec_()
 
 
+def showOptionMessageBox(title, message):
+    msgBox = QMessageBox()
+    msgBox.setWindowTitle(title)
+    msgBox.setText(message)
+
+    # 定义按钮
+    button_confirm = msgBox.addButton("确认", QMessageBox.AcceptRole)
+    button_cancel = msgBox.addButton("取消", QMessageBox.RejectRole)
+
+    # 设置 QMessageBox 的样式，包括按钮样式
+    msgBox.setStyleSheet("""
+        QMessageBox { background-color: #ffffff; font-family: 'Microsoft YaHei'; font-size: 9pt; }
+        QPushButton { width: 100px; height: 20px; background-color: #262B4B; color: white; }
+        QPushButton:hover { background-color: #5555ff; }
+    """)
+    msgBox.exec_()
+
+    # 判断哪个按钮被点击并返回对应的标识
+    if msgBox.clickedButton() == button_confirm:
+        return "confirm"
+    elif msgBox.clickedButton() == button_cancel:
+        return "cancel"
+
+
 class FirstWindow(QDialog):
     def __init__(self):
         super().__init__()
@@ -118,8 +142,8 @@ class SignUpWindow(QDialog):
         showMessageBox("注册结果", msg)
         if success:
             self.signupSuccess.emit()
-            self.mainWindow = MainWindow()
-            self.mainWindow.show()
+            self.firstwindow = FirstWindow()
+            self.firstwindow.show()
             self.close()
 
 
@@ -133,6 +157,7 @@ class MainWindow(QMainWindow):
 
         self.ui.searchButton.clicked.connect(self.searchDiary)
         self.ui.createButton.clicked.connect(self.createDiary)
+        self.ui.deleteUserData.clicked.connect(self.deleteUser)
         self.ui.diaryTitleList.itemClicked.connect(self.showDiaryDetails)
         self.ui.searchSelect.currentIndexChanged.connect(self.selection_change)
         self.ui.diaryTitleList.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -194,6 +219,22 @@ class MainWindow(QMainWindow):
             else:
                 showMessageBox("删除结果", msg)
 
+    def deleteUser(self):
+        # 显示消息框并接收返回值
+        user_choice = showOptionMessageBox("注销选择", "是否注销该账号")
+        if user_choice == "confirm":
+            uid = user_info.GetCurrentUser()
+            success, msg = user_info.DeleteUserData(uid)
+            if uid != -1:
+                # 调用 UserInfo 类的 deleteUser 方法
+                user_info.DeleteUserData(uid)
+                showMessageBox("删除结果", msg)
+                self.close()
+                self.firstWindows = FirstWindow()
+                self.firstWindows.show()
+                self.close()
+            else:
+                showMessageBox("删除结果", msg)
 
 
 class DiaryWindow(QMainWindow):
@@ -206,6 +247,7 @@ class DiaryWindow(QMainWindow):
     def displayDiary(self, diary_id):
         success, content = tour_diary.ShowDiary(diary_id)  # 假设这是获取日记内容的函数
         if success:
+            tour_diary.ReadDiary(diary_id)
             max_length = 350  # 假设diaryContent1可以容纳300个字符
             if len(content) > max_length:
                 part1 = content[:max_length]
